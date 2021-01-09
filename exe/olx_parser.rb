@@ -1,5 +1,4 @@
 require 'open-uri'
-require 'byebug'
 require 'nokogiri'
 require 'csv'
 
@@ -61,6 +60,3 @@ class OlxParser
   parser = OlxParser.new
   parser.parse_to_csv(url)
 end
-
-
-#byebug
