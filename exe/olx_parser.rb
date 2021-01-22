@@ -10,20 +10,20 @@ class OlxParser
   end
 
   def parse_to_csv(url)
-    get_content(url)
-    get_data(@ordinary_content)
-    write_to_file("ordinary_offers.csv")
-    get_data(@top_content)
-    write_to_file("top_offers.csv")
+    get_html_content(url)
+    parse_data(@ordinary_content)
+    write_data_to_file("ordinary_offers.csv")
+    parse_data(@top_content)
+    write_data_to_file("top_offers.csv")
   end
 
-  def get_content(url)
+  def get_html_content(url)
     html = URI.open(url) { |result| result.read }
     @ordinary_content = Nokogiri::HTML(html).at('table#offers_table')
     @top_content = Nokogiri::HTML(html).at('table.offers--top')
   end
 
-  def get_data(content)
+  def parse_data(content)
     @titles = content.css('.marginright5.link.linkWithHash.detailsLink > strong').map { |n| n.text.gsub(/[\n]/, ' ') }
     @prices = content.css('.price').map { |n| n.text.gsub(/[ \n]/, '') }
 
@@ -45,7 +45,7 @@ class OlxParser
     @image_links = content.css('.fleft').map { |n| n.attribute("src").to_s }
   end
 
-  def write_to_file(filename)
+  def write_data_to_file(filename)
     CSV.open(filename, 'w+') do |file|
       file << %w[title price location date_time_added link image_link]
       (0..@titles.length - 1).each do |i|
