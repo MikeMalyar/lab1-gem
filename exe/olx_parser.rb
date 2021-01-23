@@ -29,7 +29,7 @@ class OlxParser
 
     @locations = []
     @times = []
-    content.css('.breadcrumb.x-normal > span').each do |n|
+    content.css('.breadcrumb.x-normal > span').each { |n|
       icon = n.css('i')
       case icon[0].attribute("data-icon").to_s
       when "location-filled"
@@ -39,21 +39,21 @@ class OlxParser
       else
         puts n.text
       end
-    end
+    }
 
     @links = content.css('.marginright5.link.linkWithHash.detailsLink').map { |n| n.attribute("href") }
     @image_links = content.css('.fleft').map { |n| n.attribute("src").to_s }
   end
 
   def write_data_to_file(filename)
-    CSV.open(filename, 'w+') do |file|
+    CSV.open(filename, 'w+') { |file|
       file << %w[title price location date_time_added link image_link]
-      (0..@titles.length - 1).each do |i|
+      (0..@titles.length - 1).each { |i|
         file << [
           @titles[i], @prices[i], @locations[i], @times[i], @links[i], @image_links[i]
         ]
-      end
-    end
+      }
+    }
   end
 end
 
