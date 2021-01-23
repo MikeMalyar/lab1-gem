@@ -30,8 +30,8 @@ class OlxParser
     @locations = []
     @times = []
     content.css('.breadcrumb.x-normal > span').each do |n|
-      @icon = n.css('i')
-      case @icon[0].attribute("data-icon").to_s
+      icon = n.css('i')
+      case icon[0].attribute("data-icon").to_s
       when "location-filled"
         @locations.append(n.text)
       when "clock"
@@ -55,8 +55,8 @@ class OlxParser
       end
     end
   end
-
-  url = 'https://www.olx.ua/hobbi-otdyh-i-sport/chernovtsy/'
-  parser = OlxParser.new
-  parser.parse_to_csv(url)
 end
+
+url = 'https://www.olx.ua/hobbi-otdyh-i-sport/chernovtsy/'
+parser = OlxParser.new
+parser.parse_to_csv(url)
